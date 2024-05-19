@@ -26,22 +26,20 @@ function splitOperation(expr) {
 }
 
 function operate(operator, num1, num2){
+    let result = 0;
     if (operator === "+"){
-        return add(num1, num2);
+        result = add(num1, num2);
     }
     else if (operator === "-"){
-        return subtract(num1, num2);
+        result = subtract(num1, num2);
     }
     else if (operator === "*"){
-        return multiply(num1, num2);
+        result = multiply(num1, num2);
     }
     else if (operator === "/"){
-        return divide(num1, num2);
+        result = divide(num1, num2);
     }
-    else{
-        return "Please recheck your operator value.";
-    }
-    return result;
+    return Math.round((result + Number.EPSILON) * 100) / 100;
 }
 screen = document.querySelector(".screen");
 let input = screen.textContent;
@@ -54,12 +52,14 @@ function addListenerToButtons() {
     keys.forEach((key) => {
         key.addEventListener("click", (event) => {
             if(key.textContent === "+" || key.textContent === "-" || key.textContent === "*" || key.textContent === "/"){
+                console.log(`display value is: ${displayValue}`);
                 let result = splitOperation(displayValue);
                 displayValue = result + " " + key.textContent + " ";
             }
             else if(key.textContent === "="){
-                let result = splitOperation(displayValue);
+                let result = splitOperation(displayValue).toString();
                 displayValue = result;
+                console.log(displayValue);
             }
             else if (key.textContent === "CLS"){
                 displayValue = "";
