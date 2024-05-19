@@ -24,8 +24,11 @@ body{
 
 .heading{
     align-self: center;
-    font-weight: 100px;
+    font-weight: 80px;
     font-size: 40px;
+    height: 100px;
+    display: flex;
+    align-items: center;
 
     /* border: 2px solid blue; */
 }
