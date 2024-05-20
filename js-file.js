@@ -1,17 +1,3 @@
-let buttons = document.querySelectorAll(".disable");
-function disableButtons(){
-    buttons.forEach((button) => {
-        button.disabled = true;
-    });
-}
-
-function enableButtons(){
-    buttons.forEach((button) => {
-        button.disabled = false;
-    });
-}
-
-
 function add(num1, num2){
     return num1 + num2;
 }
@@ -41,13 +27,11 @@ function splitOperation(expr) {
         return expr;
     }
     else if(arr[2] == ""){
-        disableButtons();
         return error;
     }
     let num1 = +arr[0];
     let num2 = +arr[2];
     let operator = arr[1];
-    console.log("Here - 3rd");
     return operate(operator, num1, num2);
 }
 
@@ -64,10 +48,14 @@ function operate(operator, num1, num2){
     }
     else if (operator === "/"){
         result = divide(num1, num2);
+        if (result == Infinity) {
+            return error;
+        }
     }
+
     return Math.round((result + Number.EPSILON) * 100) / 100;
 }
-screen = document.querySelector(".screen");
+let screen = document.querySelector(".screen");
 let input = screen.textContent;
 displayValue = "";
 addListenerToButtons();
@@ -81,6 +69,7 @@ function addListenerToButtons() {
             if(key.textContent === "+" || key.textContent === "-" || key.textContent === "*" || key.textContent === "/"){
                 let result = splitOperation(displayValue);
                 if (result == error){
+                    disableButtons();
                     displayValue = result;
                 }
                 else {
@@ -88,8 +77,12 @@ function addListenerToButtons() {
                 }
             }
             else if(key.textContent === "="){
+                
                 console.log(displayValue);
                 let result = splitOperation(displayValue).toString();
+                if (result == error){
+                    disableButtons();
+                }
                 displayValue = result;
             }
             else if (key.textContent === "CLS"){
@@ -106,3 +99,17 @@ function addListenerToButtons() {
 }
 
 
+let buttons = document.querySelectorAll(".disable");
+function disableButtons(){
+    buttons.forEach((button) => {
+        button.disabled = true;
+    });
+    screen.classList.add("error");
+}
+
+function enableButtons(){
+    buttons.forEach((button) => {
+        button.disabled = false;
+    });
+    screen.classList.remove("error");
+}
