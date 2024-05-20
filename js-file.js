@@ -1,3 +1,17 @@
+let buttons = document.querySelectorAll(".disable");
+function disableButtons(){
+    buttons.forEach((button) => {
+        button.disabled = true;
+    });
+}
+
+function enableButtons(){
+    buttons.forEach((button) => {
+        button.disabled = false;
+    });
+}
+
+
 function add(num1, num2){
     return num1 + num2;
 }
@@ -16,12 +30,24 @@ function divide(num1, num2){
 
 function splitOperation(expr) {
     let arr = expr.split(" ");
-    if (arr.length == 1){
-        return +arr[0];
+
+
+    console.log(`expr length = ${expr.length}`);
+    console.log(`expr content = ${expr}`);
+    console.table(arr);
+
+    if (arr.length == 1)
+    {
+        return expr;
+    }
+    else if(arr[2] == ""){
+        disableButtons();
+        return error;
     }
     let num1 = +arr[0];
     let num2 = +arr[2];
     let operator = arr[1];
+    console.log("Here - 3rd");
     return operate(operator, num1, num2);
 }
 
@@ -45,6 +71,7 @@ screen = document.querySelector(".screen");
 let input = screen.textContent;
 displayValue = "";
 addListenerToButtons();
+let error = "Error!";
 
 
 function addListenerToButtons() {
@@ -52,16 +79,21 @@ function addListenerToButtons() {
     keys.forEach((key) => {
         key.addEventListener("click", (event) => {
             if(key.textContent === "+" || key.textContent === "-" || key.textContent === "*" || key.textContent === "/"){
-                console.log(`display value is: ${displayValue}`);
                 let result = splitOperation(displayValue);
-                displayValue = result + " " + key.textContent + " ";
+                if (result == error){
+                    displayValue = result;
+                }
+                else {
+                    displayValue = result + " " + key.textContent + " ";
+                }
             }
             else if(key.textContent === "="){
+                console.log(displayValue);
                 let result = splitOperation(displayValue).toString();
                 displayValue = result;
-                console.log(displayValue);
             }
             else if (key.textContent === "CLS"){
+                enableButtons();
                 displayValue = "";
             }
             else{
