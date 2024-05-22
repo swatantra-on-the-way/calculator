@@ -54,7 +54,7 @@ body{
     flex-wrap: wrap;
     justify-content: space-around;
 }
-.key{
+button{
     width: 24%;
     font-size: 20px;
     height: 50px;
