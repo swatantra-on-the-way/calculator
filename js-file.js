@@ -41,9 +41,13 @@ function operate(num1, num2, op){
 let buttons = document.querySelectorAll("button");
 buttons.forEach((button) => button.addEventListener("click", (event) => {
     if (button.className === "numKey"){
-        console.log("hi");
         displayValue += event.target.textContent;
         screen.textContent = displayValue;
 
+    }
+
+    else if (button.className === "opKey"){
+        displayValue += " " + event.target.textContent + " ";
+        screen.textContent = displayValue;
     }
 }));
