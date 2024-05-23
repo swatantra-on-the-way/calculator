@@ -40,14 +40,20 @@ function operate(num1, num2, op){
 
 let buttons = document.querySelectorAll("button");
 buttons.forEach((button) => button.addEventListener("click", (event) => {
-    if (button.className === "numKey"){
+    if (button.className == "numKey"){
         displayValue += event.target.textContent;
-        screen.textContent = displayValue;
 
     }
 
-    else if (button.className === "opKey"){
+    else if (button.className == "opKey"){
         displayValue += " " + event.target.textContent + " ";
-        screen.textContent = displayValue;
     }
+
+    else if (button.className == "equalKey") {
+        let arr = displayValue.split(" ");
+        displayValue = operate(Number(arr[0]), Number(arr[2]), arr[1]);
+
+    }
+
+    screen.textContent = displayValue;
 }));
