@@ -16,6 +16,7 @@ function divide(num1, num2){
 
 let displayValue = "";
 let screen = document.querySelector(".screen");
+let prevKey ="";
 
 function operate(num1, num2, op){
     let result = 0;
@@ -38,10 +39,15 @@ function operate(num1, num2, op){
 let buttons = document.querySelectorAll("button");
 buttons.forEach((button) => button.addEventListener("click", (event) => {
     if (event.target.className == "numKey"){
-        displayValue += event.target.textContent;
+        if (prevKey == "equalKey"){
+            displayValue = event.target.textContent;
+        }
+        else {
+            displayValue += event.target.textContent;
+        }
 
     }
-
+    //Find out if the expression is complete to evaluate
     else if (event.target.className == "opKey" || event.target.className == "equalKey"){
         let arr = displayValue.split(" ");
         let no_of_spaces = arr.length - 1;
@@ -50,8 +56,11 @@ buttons.forEach((button) => button.addEventListener("click", (event) => {
         }
     }
 
-        if (event.target.className == "opKey"){
+    //Add spacing only if it's an operation key
+    if (event.target.className == "opKey"){
             displayValue += " " + event.target.textContent + " ";
         }
+    
+    prevKey = event.target.className;
     screen.textContent = displayValue;
 }));
