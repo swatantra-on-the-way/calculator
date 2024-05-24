@@ -14,9 +14,6 @@ function divide(num1, num2){
     return num1 / num2;
 }
 
-let num1 = 0;
-let num2 = 0;
-let op = "";
 let displayValue = "";
 let screen = document.querySelector(".screen");
 
@@ -40,20 +37,21 @@ function operate(num1, num2, op){
 
 let buttons = document.querySelectorAll("button");
 buttons.forEach((button) => button.addEventListener("click", (event) => {
-    if (button.className == "numKey"){
+    if (event.target.className == "numKey"){
         displayValue += event.target.textContent;
 
     }
 
-    else if (button.className == "opKey"){
-        displayValue += " " + event.target.textContent + " ";
-    }
-
-    else if (button.className == "equalKey") {
+    else if (event.target.className == "opKey" || event.target.className == "equalKey"){
         let arr = displayValue.split(" ");
-        displayValue = operate(Number(arr[0]), Number(arr[2]), arr[1]);
-
+        let no_of_spaces = arr.length - 1;
+        if (no_of_spaces == 2){
+            displayValue = operate(Number(arr[0]), Number(arr[2]), arr[1]);
+        }
     }
 
+        if (event.target.className == "opKey"){
+            displayValue += " " + event.target.textContent + " ";
+        }
     screen.textContent = displayValue;
 }));
