@@ -16,10 +16,11 @@ function divide(num1, num2){
 
 let displayValue = "";
 let screen = document.querySelector(".screen");
-let prevKey ="";
+let prevKey = "";
 let prevValue = "";
 let sign = 0;
-let error = 0;
+let error = false;
+let input_buttons = document.querySelectorAll(".input");
 
 function operate(num1, num2, op){
     let result = 0;
@@ -41,11 +42,14 @@ function operate(num1, num2, op){
 
 let buttons = document.querySelectorAll("button");
 buttons.forEach((button) => button.addEventListener("click", (event) => {
-    if (error){
-        displayValue = "Error!";
+    if (event.target.classList.contains("clearKey")){
+        displayValue = "";
+        input_buttons.forEach((btn) => {
+            btn.disabled = false;
+        });
     }
-    else if (event.target.className == "numKey"){
-        if (prevKey == "equalKey"){
+    else if (event.target.classList.contains("numKey")){
+        if ((displayValue != "") && (prevKey.classList.contains("equalKey"))){
             displayValue = event.target.textContent;
         }
         else {
@@ -60,33 +64,47 @@ buttons.forEach((button) => button.addEventListener("click", (event) => {
 
     }
     //Find out if the expression is complete to evaluate
-    else if (event.target.className == "opKey" || event.target.className == "equalKey"){
-        let arr = displayValue.split(" ");
-        let no_of_spaces = arr.length - 1;
-        if (no_of_spaces == 2 ){
-            displayValue = operate(Number(arr[0]), Number(arr[2]), arr[1]);
+    else if ((event.target.classList.contains("opKey")) || (event.target.classList.contains("equalKey"))){
+        if (errorCheck(prevKey, event.target)) {
+            displayValue = "Math Error ... ";
+            input_buttons.forEach((btn) => {
+                btn.disabled = true;
+            })
         }
 
-        //Add spacing only if it's an operation key
-        if (event.target.className == "opKey"){
-            if ((event.target.textContent == "+" || event.target.textContent == "-") && displayValue == ""){
-                sign = 1;
-             }
+        else {
+            console.log("if else condition didn't execute.");
+            let arr = displayValue.split(" ");
+            let no_of_spaces = arr.length - 1;
+            if (no_of_spaces == 2 ){
+                displayValue = operate(Number(arr[0]), Number(arr[2]), arr[1]);
+            }
 
-             else if ((event.target.textContent == "*" || event.target.textContent == "/") && displayValue == ""){
-                error = 1;
-                console.log("error detected");
-             }
-            displayValue += " " + event.target.textContent + " ";
+            //Add spacing only if it's an operation key
+            if (event.target.classList.contains("opKey")){
+                if ((event.target.textContent == "+" || event.target.textContent == "-") && displayValue == ""){
+                    sign = 1;
+                }
+                displayValue += " " + event.target.textContent + " ";
+            }
         }
     }
 
-    else if(event.target.className == "clearKey"){
-        displayValue = "";
-        error = 0;
-    }
-
-    prevKey = event.target.className;
+    prevKey = event.target;
     prevValue = event.target.textContent;
     screen.textContent = displayValue;
 }));
+
+function errorCheck(prevKey, currKey) {
+
+    if (displayValue) {
+        if ((prevKey.classList.contains("arith")) && ( (currKey.classList.contains("arith")) || currKey.classList.contains("equalKey"))){
+            console.log("hami yeta xam");
+            return true;
+        }
+    }
+    else if((currKey.textContent == "*") || (currKey.textContent == "/")){
+        return true;
+    }
+    return false;
+}
