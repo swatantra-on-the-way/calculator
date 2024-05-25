@@ -36,7 +36,8 @@ function operate(num1, num2, op){
     else if (op === "/"){
         result = divide(num1, num2);
     }
-    return result.toString();
+
+    return truncateDecimal(result).toString();
 
 }
 
@@ -99,7 +100,6 @@ function errorCheck(prevKey, currKey) {
 
     if (displayValue) {
         if ((prevKey.classList.contains("arith")) && ( (currKey.classList.contains("arith")) || currKey.classList.contains("equalKey"))){
-            console.log("hami yeta xam");
             return true;
         }
     }
@@ -107,4 +107,15 @@ function errorCheck(prevKey, currKey) {
         return true;
     }
     return false;
+}
+
+function truncateDecimal(value){
+    let arr = (value.toString()).split(".");
+    if (arr[1]. length > 2){
+        return (value.toFixed(2));
+    }
+    else{
+        return value;
+    }
+
 }
