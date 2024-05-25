@@ -34,6 +34,9 @@ function operate(num1, num2, op){
         result = multiply(num1, num2);
     }
     else if (op === "/"){
+        if (num2 == 0){
+            return "Math Error ... ";
+        }
         result = divide(num1, num2);
     }
 
@@ -68,13 +71,9 @@ buttons.forEach((button) => button.addEventListener("click", (event) => {
     else if ((event.target.classList.contains("opKey")) || (event.target.classList.contains("equalKey"))){
         if (errorCheck(prevKey, event.target)) {
             displayValue = "Math Error ... ";
-            input_buttons.forEach((btn) => {
-                btn.disabled = true;
-            })
         }
 
         else {
-            console.log("if else condition didn't execute.");
             let arr = displayValue.split(" ");
             let no_of_spaces = arr.length - 1;
             if (no_of_spaces == 2 ){
@@ -89,6 +88,11 @@ buttons.forEach((button) => button.addEventListener("click", (event) => {
                 displayValue += " " + event.target.textContent + " ";
             }
         }
+    }
+    if (displayValue === "Math Error ... "){
+        input_buttons.forEach((btn) => {
+            btn.disabled = true;
+        })
     }
 
     prevKey = event.target;
