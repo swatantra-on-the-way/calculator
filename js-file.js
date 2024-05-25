@@ -20,6 +20,7 @@ let prevKey = "";
 let prevValue = "";
 let sign = 0;
 let error = false;
+let dotKey = document.querySelector(".dotKey.input");
 let input_buttons = document.querySelectorAll(".input");
 
 function operate(num1, num2, op){
@@ -39,8 +40,11 @@ function operate(num1, num2, op){
         }
         result = divide(num1, num2);
     }
-
-    return truncateDecimal(result).toString();
+    console.log(result);
+    if (result - Math.round(result) == 0){
+        return result.toString();
+    }
+    return truncateDecimal(result.toString());
 
 }
 
@@ -48,6 +52,8 @@ let buttons = document.querySelectorAll("button");
 buttons.forEach((button) => button.addEventListener("click", (event) => {
     if (event.target.classList.contains("clearKey")){
         displayValue = "";
+        prevKey = "";
+        prevValue = ""
         input_buttons.forEach((btn) => {
             btn.disabled = false;
         });
@@ -67,8 +73,21 @@ buttons.forEach((button) => button.addEventListener("click", (event) => {
         }
 
     }
+
+    else if(event.target.classList.contains("dotKey")){
+        if (prevKey.classList.contains("equalKey")){
+            displayValue = ".";
+        }
+        else {
+            displayValue += ".";
+        }
+        event.target.disabled = true;
+    }
+
+
     //Find out if the expression is complete to evaluate
     else if ((event.target.classList.contains("opKey")) || (event.target.classList.contains("equalKey"))){
+        dotKey.disabled = false;
         if (errorCheck(prevKey, event.target)) {
             displayValue = "Math Error ... ";
         }
@@ -88,6 +107,7 @@ buttons.forEach((button) => button.addEventListener("click", (event) => {
                 displayValue += " " + event.target.textContent + " ";
             }
         }
+
     }
     if (displayValue === "Math Error ... "){
         input_buttons.forEach((btn) => {
@@ -103,20 +123,24 @@ buttons.forEach((button) => button.addEventListener("click", (event) => {
 function errorCheck(prevKey, currKey) {
 
     if (displayValue) {
-        if ((prevKey.classList.contains("arith")) && ( (currKey.classList.contains("arith")) || currKey.classList.contains("equalKey"))){
+        if (prevKey.classList.contains("opKey") || prevKey.classList.contains("dotKey")){
             return true;
         }
     }
     else if((currKey.textContent == "*") || (currKey.textContent == "/")){
         return true;
     }
+
+    else if (prevKey.classList.contains("dotKey")){
+        return true;
+    }
     return false;
 }
 
 function truncateDecimal(value){
-    let arr = (value.toString()).split(".");
+    let arr = value.split(".");
     if (arr[1]. length > 2){
-        return (value.toFixed(2));
+        return (Number(value).toFixed(2)).toString();
     }
     else{
         return value;
