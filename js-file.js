@@ -41,7 +41,6 @@ function operate(num1, num2, op){
         }
         result = divide(num1, num2);
     }
-    console.log(result);
     if (result - Math.round(result) == 0){
         return result.toString();
     }
@@ -86,7 +85,7 @@ buttons.forEach((button) => button.addEventListener("click", (event) => {
         }
         else {
             if (sign) {
-                displayValue = Number(prevValue + event.target.textContent).toString();
+                displayValue = prevValue + event.target.textContent;
                 sign = 0;
             }
             else {
@@ -97,7 +96,6 @@ buttons.forEach((button) => button.addEventListener("click", (event) => {
     }
 
     else if(event.target.classList.contains("dotKey")){
-        console.log("I've been pressed tho'");
         if(displayValue){
             if (prevKey.classList.contains("equalKey")){
                 displayValue = ".";
@@ -160,18 +158,16 @@ buttons.forEach((button) => button.addEventListener("click", (event) => {
 }));
 
 function errorCheck(prevKey, currKey) {
-
     if (displayValue) {
         if (prevKey.classList.contains("opKey") || prevKey.classList.contains("dotKey")){
             return true;
         }
     }
-    else if((currKey.textContent == "*") || (currKey.textContent == "/")){
-        return true;
-    }
-
-    else if (prevKey.classList.contains("dotKey")){
-        return true;
+    else {
+        if(currKey.textContent == "*" || currKey.textContent == "/"){
+            return true;
+        }
     }
     return false;
 }
+
