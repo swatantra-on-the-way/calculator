@@ -44,8 +44,22 @@ function operate(num1, num2, op){
     if (result - Math.round(result) == 0){
         return result.toString();
     }
-    return truncateDecimal(result.toString());
+    // return truncateDecimal(result.toString());
+    return result.toString();
 
+}
+
+function removeChar(){
+    if (displayValue){
+        let l = displayValue.length;
+        if (displayValue.substring(l - 1) === " "){
+            displayValue = displayValue.substring(0, l - 3);
+        }
+
+        else{
+            displayValue = displayValue.substring(0, l - 1);
+        }
+    }
 }
 
 let buttons = document.querySelectorAll("button");
@@ -107,8 +121,12 @@ buttons.forEach((button) => button.addEventListener("click", (event) => {
                 displayValue += " " + event.target.textContent + " ";
             }
         }
-
     }
+
+    else if (event.target.classList.contains("backKey")){
+        removeChar();
+    }
+
     if (displayValue === "Math Error ... "){
         input_buttons.forEach((btn) => {
             btn.disabled = true;

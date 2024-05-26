@@ -37,14 +37,16 @@ body{
     border: 2px solid burlywood;
     width: 80%;
     align-self: center;
-    height: 65px;
+    height: 70px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    font-size: 40px;
-    overflow: hidden;
+    font-size: 32px;
+    overflow-x: scroll;
+    overflow-y: hidden; 
     white-space: nowrap;
     border-bottom: none;
+    min-width: 0%;
 
 }
 
