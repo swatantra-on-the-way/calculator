@@ -37,7 +37,7 @@ function operate(num1, num2, op){
     }
     else if (op === "/"){
         if (num2 == 0){
-            return "Math Error...";
+            return "Math Error !!!";
         }
         result = divide(num1, num2);
     }
@@ -71,10 +71,14 @@ buttons.forEach((button) => button.addEventListener("click", (event) => {
         prevValue = ""
         input_buttons.forEach((btn) => {
             btn.disabled = false;
+            btn.classList.remove("mask");
         });
-        console.log("remove is called");
-        screen.classList.remove("error");
+        esc_button.disabled = false;
+        esc_button.classList.remove("mask");
 
+        screen.classList.remove("error");
+        screen.textContent = "0";
+        return;
     }
     else if (event.target.classList.contains("numKey")){
         if ((displayValue != "") && (prevKey.classList.contains("equalKey"))){
@@ -93,21 +97,29 @@ buttons.forEach((button) => button.addEventListener("click", (event) => {
     }
 
     else if(event.target.classList.contains("dotKey")){
-        if (prevKey.classList.contains("equalKey")){
-            displayValue = ".";
+        console.log("I've been pressed tho'");
+        if(displayValue){
+            if (prevKey.classList.contains("equalKey")){
+                displayValue = ".";
+            }
+            else {
+                displayValue += ".";
+            }
         }
         else {
-            displayValue += ".";
+            displayValue = ".";
         }
         event.target.disabled = true;
+        dotKey.classList.add("mask");
     }
 
 
     //Find out if the expression is complete to evaluate
     else if ((event.target.classList.contains("opKey")) || (event.target.classList.contains("equalKey"))){
         dotKey.disabled = false;
+        dotKey.classList.remove("mask");
         if (errorCheck(prevKey, event.target)) {
-            displayValue = "Math Error...";
+            displayValue = "Math Error !!!";
         }
 
         else {
@@ -131,13 +143,15 @@ buttons.forEach((button) => button.addEventListener("click", (event) => {
         removeChar();
     }
 
-    if (displayValue === "Math Error..."){
+    if (displayValue === "Math Error !!!"){
         input_buttons.forEach((btn) => {
+            btn.classList.add("mask");
             btn.disabled = true;
         })
         esc_button.disabled = true;
-        console.log("esc is disabled and error color should change");
+        esc_button.classList.add("mask");
         screen.classList.add("error");
+        
     }
 
     prevKey = event.target;
@@ -160,15 +174,4 @@ function errorCheck(prevKey, currKey) {
         return true;
     }
     return false;
-}
-
-function truncateDecimal(value){
-    let arr = value.split(".");
-    if (arr[1]. length > 2){
-        return (Number(value).toFixed(2)).toString();
-    }
-    else{
-        return value;
-    }
-
 }
