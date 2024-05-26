@@ -22,6 +22,7 @@ let sign = 0;
 let error = false;
 let dotKey = document.querySelector(".dotKey.input");
 let input_buttons = document.querySelectorAll(".input");
+let esc_button = document.querySelector(".backKey");
 
 function operate(num1, num2, op){
     let result = 0;
@@ -36,7 +37,7 @@ function operate(num1, num2, op){
     }
     else if (op === "/"){
         if (num2 == 0){
-            return "Math Error ... ";
+            return "Math Error...";
         }
         result = divide(num1, num2);
     }
@@ -71,6 +72,9 @@ buttons.forEach((button) => button.addEventListener("click", (event) => {
         input_buttons.forEach((btn) => {
             btn.disabled = false;
         });
+        console.log("remove is called");
+        screen.classList.remove("error");
+
     }
     else if (event.target.classList.contains("numKey")){
         if ((displayValue != "") && (prevKey.classList.contains("equalKey"))){
@@ -103,7 +107,7 @@ buttons.forEach((button) => button.addEventListener("click", (event) => {
     else if ((event.target.classList.contains("opKey")) || (event.target.classList.contains("equalKey"))){
         dotKey.disabled = false;
         if (errorCheck(prevKey, event.target)) {
-            displayValue = "Math Error ... ";
+            displayValue = "Math Error...";
         }
 
         else {
@@ -127,10 +131,13 @@ buttons.forEach((button) => button.addEventListener("click", (event) => {
         removeChar();
     }
 
-    if (displayValue === "Math Error ... "){
+    if (displayValue === "Math Error..."){
         input_buttons.forEach((btn) => {
             btn.disabled = true;
         })
+        esc_button.disabled = true;
+        console.log("esc is disabled and error color should change");
+        screen.classList.add("error");
     }
 
     prevKey = event.target;
